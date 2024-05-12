@@ -1,10 +1,11 @@
 {
-  "name": "afc-app",
+  "name": "afc-app-backend",
   "version": "1.0.0",
   "description": "User order app",
   "main": "index.js",
   "scripts": {
-    "start": "cd ./backend && node index.js && cd ../frontend && npm start"
+    "start": "node index.js",
+    "test": "npm test"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7",
     "uuidv4": "^6.2.13"
   }
 }
