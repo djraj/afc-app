@@ -1,0 +1,19 @@
+{
+  "name": "afc-app",
+  "version": "1.0.0",
+  "description": "User order app",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djraj/afc-app.git"
+  },
+  "author": "Durairaj Anbarasan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djraj/afc-app/issues"
+  },
+  "homepage": "https://github.com/djraj/afc-app#readme"
+}
