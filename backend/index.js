@@ -20,7 +20,7 @@ require(`./routes/order.route`)(app);
 require(`./routes/products.route`)(app);
 
 // Start server
-const port = config.SERVER_PORT;
+const port = config.port;
 app.listen(port, async () => {
   db.initiateTables();
   console.log(`AFC App Server is running on port ${port}`);

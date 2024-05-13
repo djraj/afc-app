@@ -3,6 +3,7 @@ const path = require("path");
 const mysql = require("mysql2/promise");
 
 const envPath = path.join(__dirname, "../.env");
+console.log(envPath)
 const envFile = fs.readFileSync(envPath, "utf-8");
 
 const envRegex = /(.*)=(.*)/gm;
@@ -16,6 +17,7 @@ while ((match = envRegex.exec(envFile)) !== null) {
 
 const pool = mysql.createPool({
     host: env.DB_HOST,
+    port: env.DB_PORT,
     user: env.DB_USER,
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
