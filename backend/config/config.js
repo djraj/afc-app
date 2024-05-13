@@ -3,7 +3,6 @@ const path = require("path");
 const mysql = require("mysql2/promise");
 
 const envPath = path.join(__dirname, "../.env");
-console.log(envPath)
 const envFile = fs.readFileSync(envPath, "utf-8");
 
 const envRegex = /(.*)=(.*)/gm;
