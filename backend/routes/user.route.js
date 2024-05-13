@@ -1,9 +1,11 @@
 module.exports = (app) => {
     const router = require("express").Router();
-    const config = require("../config/config.js");
+    const auth = require("../config/auth.js")
     const userControl = require('../controller/user.controller.js')
 
-    router.post('/submit-payment', main.initiateTransaction);
+    router.post('/', auth.checkAuth, userControl.registerUser);
+    router.post('/login', userControl.login);
+    router.get('/:userId', auth.checkAuth, userControl.getUser);
 
     app.use('/api/user', router);
 };

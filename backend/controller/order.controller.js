@@ -10,8 +10,8 @@ exports.createOrder = async (req, res) => {
   try {
     // 1. Create the order record
     const [orderResult] = await connection.query(
-      'INSERT INTO orders (user_id) VALUES (?)',
-      [userId]
+      "INSERT INTO orders (user_id, status) VALUES (?)",
+      [userId, "created"]
     );
     const orderId = orderResult.insertId;
 
@@ -21,28 +21,58 @@ exports.createOrder = async (req, res) => {
       product_id: item.productId,
       quantity: item.quantity,
     }));
-    await connection.query('INSERT INTO order_items (order_id, product_id, quantity) VALUES ?', [orderItems]);
+    await connection.query(
+      "INSERT INTO order_items (order_id, product_id, quantity) VALUES ?",
+      [orderItems]
+    );
 
     await connection.commit();
-    res.json({ message: 'Order created successfully', orderId });
+    res.json({ message: "Order created successfully", orderId });
   } catch (err) {
     console.error(err);
     await connection.rollback();
-    res.status(500).json({ message: 'Error creating order' });
+    res.status(500).json({ message: "Error creating order" });
   } finally {
     connection.release();
   }
 };
 
-
 exports.getOrder = async (req, res) => {
-    const returnObj = req.body;
-    console.log("Received data: ", returnObj);
-    
-  };
+  const { orderId } = req.params;
+  try {
+    const [order] = await config.db.query("SELECT * FROM orders WHERE id = ?", [
+      orderId,
+    ]);
+    if (!order[0]) {
+      return null; // Order not found
+    }
+
+    const [orderItems] = await config.db.query(
+      "SELECT p.name, oi.quantity FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?",
+      [orderId]
+    );
+
+    return { ...order[0], items: orderItems };
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 exports.getOrders = async (req, res) => {
-  const returnObj = req.body;
-  console.log("Received data: ", returnObj);
-  
+  const { page = 1, limit = 10 } = req.query; // Default values for page and limit
+  const offset = (page - 1) * limit;
+  try {
+    const [orders] = await config.db.query('SELECT * FROM orders LIMIT ?, ?', [offset, limit]);
+    const totalOrders = await config.db.query('SELECT COUNT(*) AS total FROM orders');
+    const total = totalOrders[0][0].total;
+
+    const orderDetails = await Promise.all(orders.map(async order => {
+      const [orderItems] = await config.db.query('SELECT p.name, oi.quantity FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?', [order.id]);
+      return { ...order, items: orderItems };
+    }));
+
+    return { orders: orderDetails, total, page, limit };
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };

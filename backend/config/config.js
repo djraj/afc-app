@@ -27,5 +27,8 @@ const pool = mysql.createPool({
 module.exports = {
   url: env.API_URL,
   port: env.SERVER_PORT || 4000,
+  version: env.API_VERSION,
   db: pool,
+  dbName: env.DB_NAME,
+  secret: env.JWT_SECRET,
 };
