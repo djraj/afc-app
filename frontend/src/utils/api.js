@@ -155,14 +155,28 @@ export const getOrders = async () => {
   }
 };
 
-export const createOrder = async (token, orderData) => {
+export const createOrderAPI = async (orderData) => {
+  const token = getUserToken();
+
   try {
-    // const response = await axios.post(`${BASE_URL}/orders`, orderData, {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // });
-    // return response.data;
+    const response = await fetch(`${BASE_URL}/orders`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*", 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(orderData), // Convert product data to JSON
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create product with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data; // Return the created product data
   } catch (err) {
     console.error(err);
-    throw err; // Re-throw for handling in components
+    throw err; // Re-throw the error for handling in components
   }
 };

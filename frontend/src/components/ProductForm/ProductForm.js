@@ -12,26 +12,22 @@ const ProductForm = ({ onAddProduct }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    if (Number.isInteger(price)) {
-      console.log("The product price is an integer.");
-    } else {
-      console.log("The product price is not an integer.");
-      alert("The product price is not an integer.");
-      return;
+    console.log(price);
+    if (!Number.isInteger(price) || Number.isNaN(price)) {
+      const temp = Math.round(price);
+      setPrice(temp.toFixed(2));
     }
+
     const product = {
       productName: name,
       productDesc: description,
       productPrice: price,
     };
     const response = await createProduct(product);
+    console.log(response);
 
-    if (!response.ok) {
-      alert(`Error creating product: ${response.err.message}`);
-    } else {
-      alert("Product created successfully!");
-      navigate("/products");
-    }
+    alert("Product created successfully!");
+    navigate("/products");
   };
 
   const handleBack = () => {
