@@ -1,15 +1,22 @@
 // src/components/OrderList.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // for navigation
-import { getOrders, getUserID } from "../../utils/api";
+import { getOrders, getUserToken } from "../../utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
+    const token = getUserToken();
+    // console.log("dashtoken", token);
+    if (!token) {
+      navigate('/login'); // Redirect to login if no token
+      return; // Exit if no token
+    }
     // Fetch order list for the logged-in user using the API with token
     const fetchOrders = async () => {
       // const userId = getUserID();
@@ -17,7 +24,8 @@ const OrderList = () => {
 
       try {
         const response = await getOrders();
-        setOrders(response.data);
+        console.log("getOrders: ",response)
+        setOrders(response.orders);
       } catch (err) {
         console.error(err);
       }
@@ -55,7 +63,7 @@ const OrderList = () => {
             <thead>
               <tr>
                 <th scope="col">Order ID</th>
-                <th scope="col">Items</th>
+                <th scope="col">Items (Quantity)</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
@@ -66,9 +74,10 @@ const OrderList = () => {
                   {/* Display order items */}
                   <td>
                     {order.items.map((item) => (
-                      <span key={item.product_id}>
-                        {item.name} ({item.quantity})
-                      </span>
+                      <tr key={item.product_id}>
+                        <td>{item.name}</td>
+                        <td>({item.quantity})</td>
+                      </tr>
                     ))}
                   </td>
                   <td>{order.status}</td>

@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
 
       // 3. Login successful
       // 4. Generate JWT
-      const token = await auth.generateUserJWT(user.username);
+      const token = await auth.generateUserJWT(user.id,user.username);
       res
         .status(200)
         .json({ code: 200, message: "Login successful", userId: user.username, token: token });
@@ -44,14 +44,14 @@ exports.login = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-  const userId = req.username;
+  const userId = req.userId;
   console.log(userId)
   if (!req.authorized) {
     return res.status(200).json({ code: 401, message: "Token expired!" });
   } else {
     try {
       const [rows] = await config.db.query(
-        "SELECT * FROM users WHERE username = ?",
+        "SELECT * FROM users WHERE id = ?",
         [userId]
       );
       const user = rows[0];

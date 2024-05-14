@@ -18,7 +18,7 @@ const App = () => {
     // Check for stored token or login status
     const isLoggedInFromStorage = getUserToken();
     // If token exists, set isLoggedIn to true
-    console.log("isl",isLoggedInFromStorage)
+    // console.log("isl",isLoggedInFromStorage)
     if (isLoggedInFromStorage) {
       setIsLoggedIn(true);
     }

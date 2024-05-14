@@ -13,7 +13,7 @@ const SideMenu = ({ onLogin }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const data = await getUser();
-      console.log("User: ", data);
+      // console.log("User: ", data);
       setUser(data.message);
     };
 

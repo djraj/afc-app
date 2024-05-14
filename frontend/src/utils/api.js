@@ -60,7 +60,6 @@ export const getUser = async () => {
       },
     });
 
-    console.log(response);
     if (!response.ok) {
       throw new Error(`Login failed with status ${response.status}`);
     }
@@ -77,7 +76,7 @@ export const getUser = async () => {
 export const getProducts = async () => {
   try {
     const token = getUserToken();
-    console.log("prodtoken",token)
+    // console.log("prodtoken",token)
     const response = await fetch(`${BASE_URL}/products`, {
       method: "GET",
       headers: {
@@ -87,12 +86,13 @@ export const getProducts = async () => {
       },
     });
 
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       throw new Error(`Login failed with status ${response.status}`);
     }
 
     const data = await response.json();
+    console.log("getProducts: ",data);
     return data;
   } catch (err) {
     console.error(err);
@@ -132,7 +132,7 @@ export const createProduct = async (productData) => {
 export const getOrders = async () => {
   try {
     const token = getUserToken();
-    console.log("ordtoken",token)
+    // console.log("ordtoken",token)
     const response = await fetch(`${BASE_URL}/orders`, {
       method: "GET",
       headers: {
@@ -142,12 +142,13 @@ export const getOrders = async () => {
       },
     });
 
-    console.log("getOrders: ",response);
+    
     if (!response.ok) {
       throw new Error(`Login failed with status ${response.status}`);
     }
 
     const data = await response.json();
+    console.log("getOrders: ",data);
     return data;
   } catch (err) {
     console.error(err);

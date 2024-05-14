@@ -12,7 +12,8 @@ exports.checkAuth = async (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      req.username = decoded.id;
+      req.username = decoded.username;
+      req.userId = decoded.id;
       req.authorized = true;
       console.info("Proceeding...");
       next();
@@ -24,10 +25,10 @@ exports.checkAuth = async (req, res, next) => {
 };
 
 // Generate User JWT
-exports.generateUserJWT = async (username) => {
+exports.generateUserJWT = async (id, username) => {
   try {
     // start try statement
-    return jwt.sign({ id: username }, config.secret, {
+    return jwt.sign({ id: id,username: username }, config.secret, {
       algorithm: "HS256",
       expiresIn: 604800, // 1 week / 7 days
     });

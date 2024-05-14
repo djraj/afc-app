@@ -1,10 +1,12 @@
 // src/components/OrderForm.js
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { getProducts, createOrderAPI } from "../../utils/api";
+import { getUserToken, getProducts, createOrderAPI } from "../../utils/api";
 
 const OrderForm = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]); // List of available products
   const [selectedProducts, setSelectedProducts] = useState([]); // Selected products for order
   const [totalPrice, setTotalPrice] = useState(0);
@@ -17,7 +19,7 @@ const OrderForm = () => {
 
     try {
       const data = await getProducts();
-      setProducts(data);
+      setProducts(data.products);
     } catch (err) {
       setError(err.message); // Set error state
     } finally {
@@ -69,12 +71,12 @@ const OrderForm = () => {
     }
 
     setIsLoading(true); // Set loading state
-
     try {
       const response = await createOrderAPI(selectedProducts);
       console.log(response);
       console.log("Order created successfully:"); // Handle successful order creation
-      // You can clear selectedProducts, reset totalPrice, and display a success message here
+      alert("Order created successfully!")
+      navigate("/orders");
     } catch (err) {
       setError(err.message); // Set error state
     } finally {
@@ -84,6 +86,13 @@ const OrderForm = () => {
 
   // Fetch products on component mount (assuming products are static)
   useEffect(() => {
+    const token = getUserToken();
+    // console.log("dashtoken", token);
+    if (!token) {
+      navigate('/login'); // Redirect to login if no token
+      return; // Exit if no token
+    }
+
     fetchProducts();
   }, []);
 
@@ -99,7 +108,7 @@ const OrderForm = () => {
             handleProductSelection(product.id, e.target.checked ? 1 : 0)
           }
         />
-        {product.name} (Price: ${product.price.toFixed(2)})
+        {product.name} (Price: ${product.price})
       </label>
       {selectedProducts.some((item) => item.productId === product.id) && (
         <input

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { createProduct } from "../../utils/api";
+import { getUserToken, createProduct } from "../../utils/api";
 
-const ProductForm = ({ onAddProduct }) => {
+const ProductForm = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -33,6 +33,15 @@ const ProductForm = ({ onAddProduct }) => {
   const handleBack = () => {
     navigate(-1); // Go back one route in history
   };
+
+  useEffect(() => {
+    const token = getUserToken();
+    // console.log("dashtoken", token);
+    if (!token) {
+      navigate('/login'); // Redirect to login if no token
+      return; // Exit if no token
+    }
+  }, []);
 
   return (
     <div className="row justify-content-center p-5">

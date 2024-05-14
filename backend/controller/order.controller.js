@@ -1,16 +1,16 @@
 const config = require("../config/config");
 
 exports.createOrder = async (req, res) => {
-  const userId = req.user.id; // Assuming user ID is available from authentication middleware
-  const { items } = req.body; // Array of product IDs and quantities
-
+  const userId = req.userId; // Assuming user ID is available from authentication middleware
+  const  items  = req.body; // Array of product IDs and quantities
+  console.log("product list in order: ",items);
   // Transaction to handle potential database errors
   const connection = await config.db.getConnection();
   await connection.beginTransaction();
   try {
     // 1. Create the order record
     const [orderResult] = await connection.query(
-      "INSERT INTO orders (user_id, status) VALUES (?)",
+      "INSERT INTO orders (user_id, status) VALUES (?,?)",
       [userId, "created"]
     );
     const orderId = orderResult.insertId;
@@ -21,10 +21,14 @@ exports.createOrder = async (req, res) => {
       product_id: item.productId,
       quantity: item.quantity,
     }));
-    await connection.query(
-      "INSERT INTO order_items (order_id, product_id, quantity) VALUES ?",
-      [orderItems]
-    );
+
+    orderItems.forEach(async item => {
+      await connection.query(
+        "INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)", // Use three question marks
+        [item.order_id, item.product_id, item.quantity]
+      );
+    });
+    
 
     await connection.commit();
     res.json({ message: "Order created successfully", orderId });
@@ -61,7 +65,7 @@ exports.getOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
   const { page = 1, limit = 10 } = req.query; // Default values for page and limit
   const offset = (page - 1) * limit;
-  const userId = req.username;
+  const userId = req.userId;
   console.log("inGetOrders: ",userId)
 
   try {
@@ -87,7 +91,7 @@ exports.getOrders = async (req, res) => {
     );
 
     console.log("orders: ", orderDetails);
-    return { orders: orderDetails, total, page, limit };
+    return res.status(200).json({ orders: orderDetails, total, page, limit });
   } catch (err) {
     console.error(err); // Log the error for debugging
     res.status(500).json({ message: 'Internal server error' });
