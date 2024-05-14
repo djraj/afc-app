@@ -1,5 +1,7 @@
 // src/components/OrderForm.js
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const OrderForm = () => {
   const [products, setProducts] = useState([]); // List of available products

@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
 
       // 3. Login successful
       // 4. Generate JWT
-      const token = await auth.generateUserJWT(user.username, user.password);
+      const token = await auth.generateUserJWT(user.username);
       res
         .status(200)
         .json({ code: 200, message: "Login successful", userId: user.username, token: token });
@@ -44,8 +44,8 @@ exports.login = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-  const userId = req.params.userId;
-
+  const userId = req.username;
+  console.log(userId)
   if (!req.authorized) {
     return res.status(200).json({ code: 401, message: "Token expired!" });
   } else {
@@ -55,6 +55,7 @@ exports.getUser = async (req, res) => {
         [userId]
       );
       const user = rows[0];
+      console.log(user)
 
       if (!user) {
         // User not found
@@ -63,7 +64,7 @@ exports.getUser = async (req, res) => {
           .json({ code: 401, message: "Invalid username or password" });
       }
 
-      res.status(200).json({ code: 200, message: user });
+      res.status(200).json({ code: 200, message: {first_name: user.first_name, last_name:user.last_name} });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Internal server error" });
@@ -102,7 +103,7 @@ exports.registerUser = async (req, res) => {
   } catch (err) {
     console.error(err);
     await connection.rollback();
-    res.status(500).json({ message: "Error creating order" });
+    res.status(500).json({ message: "Error creating user!" });
   } finally {
     connection.release();
   }

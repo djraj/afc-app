@@ -5,14 +5,16 @@ const jwt = require("jsonwebtoken");
 exports.checkAuth = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
+  console.info("Checking token...");
+  // console.info(token);
   if (token) {
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      req.username = decoded;
+      req.username = decoded.id;
       req.authorized = true;
+      console.info("Proceeding...");
       next();
     });
   } else {
@@ -22,10 +24,10 @@ exports.checkAuth = async (req, res, next) => {
 };
 
 // Generate User JWT
-exports.generateUserJWT = async (username, passHash) => {
+exports.generateUserJWT = async (username) => {
   try {
     // start try statement
-    return jwt.sign({ id: username }, passHash, {
+    return jwt.sign({ id: username }, config.secret, {
       algorithm: "HS256",
       expiresIn: 604800, // 1 week / 7 days
     });

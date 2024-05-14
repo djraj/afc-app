@@ -7,5 +7,5 @@ module.exports = (app) => {
     router.get('/', auth.checkAuth, orderControl.getOrders);
     router.get('/:orderId', auth.checkAuth, orderControl.getOrder);
 
-    app.use('/api/order', router);
+    app.use('/api/orders', router);
 };

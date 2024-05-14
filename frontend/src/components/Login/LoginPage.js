@@ -1,9 +1,11 @@
 // src/components/LoginPage.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // for navigation
-import { login } from "../../utils/api";
+import { login, saveUserToken, saveUserID } from "../../utils/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,7 +14,10 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await login(username, password); // Call login function from api.js
-      localStorage.setItem("token", response.token); // Store token in local storage
+      console.log("resp",response);
+      saveUserToken(response.token); // Store token in local storage
+      saveUserID(response.userId); // Store token in local storage
+      onLogin(true);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -21,8 +26,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container align-middle">
-      <div className="row">
+    <div className="container position-absolute top-50 start-50 translate-middle">
+      <div className="row justify-content-center">
         <div className="col-md-4">
           <div className="card">
             <div className="card-header">
@@ -30,7 +35,7 @@ const LoginPage = () => {
             </div>
             <form onSubmit={handleLogin}>
               <div className="card-body">
-                <div className="form-group">
+                <div className="form-group pb-3">
                   <label htmlFor="username">Username</label>
                   <input
                     type="text"
@@ -41,7 +46,7 @@ const LoginPage = () => {
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group pb-3">
                   <label htmlFor="password">Password</label>
                   <input
                     type="password"
@@ -56,6 +61,7 @@ const LoginPage = () => {
               <div className="card-footer">
                 <div className="d-grid gap-2">
                   <button className="btn btn-primary" type="submit">
+                  <FontAwesomeIcon icon={fas.faRightToBracket} className="pe-2" />
                     Sign In
                   </button>
                 </div>

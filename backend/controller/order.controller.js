@@ -61,18 +61,36 @@ exports.getOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
   const { page = 1, limit = 10 } = req.query; // Default values for page and limit
   const offset = (page - 1) * limit;
+  const userId = req.username;
+  console.log("inGetOrders: ",userId)
+
   try {
-    const [orders] = await config.db.query('SELECT * FROM orders LIMIT ?, ?', [offset, limit]);
-    const totalOrders = await config.db.query('SELECT COUNT(*) AS total FROM orders');
+    const [orders] = await config.db.query(
+      'SELECT * FROM orders WHERE user_id = ? LIMIT ?, ?',
+      [userId, offset, limit]
+    );
+
+    const totalOrders = await config.db.query(
+      'SELECT COUNT(*) AS total FROM orders WHERE user_id = ?',
+      [userId]
+    );
     const total = totalOrders[0][0].total;
 
-    const orderDetails = await Promise.all(orders.map(async order => {
-      const [orderItems] = await config.db.query('SELECT p.name, oi.quantity FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?', [order.id]);
-      return { ...order, items: orderItems };
-    }));
+    const orderDetails = await Promise.all(
+      orders.map(async order => {
+        const [orderItems] = await config.db.query(
+          'SELECT p.name, oi.quantity FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?',
+          [order.id]
+        );
+        return { ...order, items: orderItems };
+      })
+    );
 
+    console.log("orders: ", orderDetails);
     return { orders: orderDetails, total, page, limit };
   } catch (err) {
+    console.error(err); // Log the error for debugging
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
