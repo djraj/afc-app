@@ -3,7 +3,7 @@ module.exports = (app) => {
     const auth = require("../config/auth.js")
     const userControl = require('../controller/user.controller.js')
 
-    router.post('/', auth.checkAuth, userControl.registerUser);
+    router.post('/', userControl.registerUser);
     router.post('/login', userControl.login);
     router.get('/:userId', auth.checkAuth, userControl.getUser);
 
