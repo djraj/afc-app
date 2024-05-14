@@ -3,6 +3,7 @@ const cors = require("cors");
 const config = require("./config/config");
 const db = require("./config/initiateDB");
 const bodyParser = require("body-parser");
+const refreshStatus = require('./config/orderStatusCronjob')
 
 const corsOptions = {
   origin: 'http://localhost:3000'
@@ -40,4 +41,5 @@ const port = config.port;
 app.listen(port, async () => {
   db.initiateTables();
   console.log(`AFC App Server is running on port ${port}`);
+  refreshStatus;
 });
