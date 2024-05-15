@@ -1,6 +1,6 @@
 // src/App.js (updated)
 import React, { useState, useEffect } from "react";
-import "./App.css"
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SideMenu from "./components/SideMenu/SideMenu";
 import Dashboard from "./components/Dashboard/Dashboard";
@@ -9,6 +9,7 @@ import ProductForm from "./components/ProductForm/ProductForm";
 import OrderList from "./components/OrderList/OrderList";
 import OrderForm from "./components/OrderForm/OrderForm";
 import LoginPage from "./components/Login/LoginPage";
+import RegisterPage from "./components/Register/RegisterPage";
 import { getUserToken } from "./utils/api";
 
 const App = () => {
@@ -39,16 +40,32 @@ const App = () => {
 
           <div className="col-md-8">
             <Routes>
-            <Route path="/" element={<Dashboard onLogin={handleLogin}/>} />
+              <Route path="/" element={<Dashboard onLogin={handleLogin} />} />
               <Route
                 path="/login"
                 element={<LoginPage onLogin={handleLogin} />}
               />
-              
-              <Route path="/products" element={<ProductList onLogin={handleLogin}/>} />
-              <Route path="/orders" element={<OrderList onLogin={handleLogin}/>} />
-              <Route path="/products/create-product" element={<ProductForm onLogin={handleLogin}/>} />
-              <Route path="/orders/create-order" element={<OrderForm onLogin={handleLogin}/>} />
+
+              <Route
+                path="/products"
+                element={<ProductList onLogin={handleLogin} />}
+              />
+              <Route
+                path="/orders"
+                element={<OrderList onLogin={handleLogin} />}
+              />
+              <Route
+                path="/products/create-product"
+                element={<ProductForm onLogin={handleLogin} />}
+              />
+              <Route
+                path="/orders/create-order"
+                element={<OrderForm onLogin={handleLogin} />}
+              />
+              <Route
+                path="/register"
+                element={<RegisterPage />}
+              />
             </Routes>
           </div>
         </div>

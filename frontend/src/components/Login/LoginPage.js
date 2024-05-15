@@ -14,15 +14,20 @@ const LoginPage = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await login(username, password); // Call login function from api.js
-      console.log("resp",response);
+      console.log("resp", response);
       saveUserToken(response.token); // Store token in local storage
       saveUserID(response.userId); // Store token in local storage
       onLogin(true);
       navigate("/");
     } catch (err) {
       console.error(err);
-      alert(err)
+      alert(err);
     }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    navigate("/register"); // Redirect to register
   };
 
   return (
@@ -60,10 +65,23 @@ const LoginPage = ({ onLogin }) => {
               </div>
               <div className="card-footer">
                 <div className="d-grid gap-2">
-                  <button className="btn btn-primary" type="submit">
-                  <FontAwesomeIcon icon={fas.faRightToBracket} className="pe-2" />
-                    Sign In
-                  </button>
+                  <div className="btn-group" role="group">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleRegister}
+                    >
+                      <FontAwesomeIcon icon={fas.faUserPlus} className="pe-2" />
+                      Register
+                    </button>
+                    <button className="btn btn-primary" type="submit">
+                      <FontAwesomeIcon
+                        icon={fas.faRightToBracket}
+                        className="pe-2"
+                      />
+                      Sign In
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>

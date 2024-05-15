@@ -47,6 +47,30 @@ export const login = async (username, password) => {
   return data;
 };
 
+export const registerUser = async (userData) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/user`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*", 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData), // Convert product data to JSON
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create product with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data; // Return the created user data
+  } catch (err) {
+    console.error(err);
+    throw err; // Re-throw the error for handling in components
+  }
+};
+
 // User API (for profile management)
 export const getUser = async () => {
   try {
