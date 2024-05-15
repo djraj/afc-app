@@ -5,16 +5,15 @@ import { useNavigate } from "react-router-dom"; // for navigation
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
-const ProductList = () => {
+const ProductList = ({onLogin}) => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = getUserToken();
-    // console.log("dashtoken", token);
     if (!token) {
-      navigate('/login'); // Redirect to login if no token
-      return; // Exit if no token
+      onLogin(false);
+      navigate("/login"); // Redirect to login if no token
     }
     
     const fetchProducts = async () => {

@@ -4,7 +4,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { getUserToken, createProduct } from "../../utils/api";
 
-const ProductForm = () => {
+const ProductForm = ({onLogin}) => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -36,10 +36,9 @@ const ProductForm = () => {
 
   useEffect(() => {
     const token = getUserToken();
-    // console.log("dashtoken", token);
     if (!token) {
-      navigate('/login'); // Redirect to login if no token
-      return; // Exit if no token
+      onLogin(false);
+      navigate("/login"); // Redirect to login if no token
     }
   }, []);
 
@@ -56,7 +55,7 @@ const ProductForm = () => {
           <form onSubmit={handleSubmit}>
             <div className="card-body">
               <div className="input-group mb-3">
-                <span class="input-group-text" id="name">
+                <span className="input-group-text" id="name">
                   Product name
                 </span>
                 <input
@@ -70,7 +69,7 @@ const ProductForm = () => {
                 />
               </div>
               <div className="input-group mb-3">
-                <span class="input-group-text" id="price">
+                <span className="input-group-text" id="price">
                   Product Price $
                 </span>
                 <input
@@ -84,7 +83,7 @@ const ProductForm = () => {
                 />
               </div>
               <div className="input-group">
-                <span class="input-group-text" id="description">
+                <span className="input-group-text" id="description">
                   Product Description
                 </span>
                 <textarea
@@ -100,10 +99,10 @@ const ProductForm = () => {
             </div>
             <div className="card-footer">
               <div className="d-grid gap-2">
-                <div class="btn-group" role="group">
+                <div className="btn-group" role="group">
                   <button
                     type="button"
-                    class="btn btn-secondary"
+                    className="btn btn-secondary"
                     onClick={handleBack}
                   >
                     <FontAwesomeIcon icon={fas.faCaretLeft} className="pe-2" />

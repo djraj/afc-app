@@ -21,7 +21,7 @@ const LoginPage = ({ onLogin }) => {
       navigate("/");
     } catch (err) {
       console.error(err);
-      // Handle login errors (e.g., display error message)
+      alert(err)
     }
   };
 

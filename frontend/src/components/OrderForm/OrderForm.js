@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { getUserToken, getProducts, createOrderAPI } from "../../utils/api";
 
-const OrderForm = () => {
+const OrderForm = ({onLogin}) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]); // List of available products
   const [selectedProducts, setSelectedProducts] = useState([]); // Selected products for order
@@ -87,10 +87,9 @@ const OrderForm = () => {
   // Fetch products on component mount (assuming products are static)
   useEffect(() => {
     const token = getUserToken();
-    // console.log("dashtoken", token);
     if (!token) {
-      navigate('/login'); // Redirect to login if no token
-      return; // Exit if no token
+      onLogin(false);
+      navigate("/login"); // Redirect to login if no token
     }
 
     fetchProducts();

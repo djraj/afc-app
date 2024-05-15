@@ -5,17 +5,16 @@ import { getOrders, getUserToken } from "../../utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
-const OrderList = () => {
+const OrderList = ({onLogin}) => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
   
 
   useEffect(() => {
     const token = getUserToken();
-    // console.log("dashtoken", token);
     if (!token) {
-      navigate('/login'); // Redirect to login if no token
-      return; // Exit if no token
+      onLogin(false);
+      navigate("/login"); // Redirect to login if no token
     }
     // Fetch order list for the logged-in user using the API with token
     const fetchOrders = async () => {

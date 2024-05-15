@@ -41,6 +41,7 @@ NOTE: Make sure to input the details according to your DB setup, server port, ur
 - React
 - React Hooks (useState, useEffect)
 - Fetch API
+- Bootstrap
 
 #### Backend
 - NodeJS

@@ -43,11 +43,11 @@ const App = () => {
                 path="/login"
                 element={<LoginPage onLogin={handleLogin} />}
               />
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/products" element={<ProductList />} />
-              <Route path="/orders" element={<OrderList />} />
-              <Route path="/products/create-product" element={<ProductForm />} />
-              <Route path="/orders/create-order" element={<OrderForm />} />
+              <Route path="/" element={<Dashboard onLogin={handleLogin}/>} />
+              <Route path="/products" element={<ProductList onLogin={handleLogin}/>} />
+              <Route path="/orders" element={<OrderList onLogin={handleLogin}/>} />
+              <Route path="/products/create-product" element={<ProductForm onLogin={handleLogin}/>} />
+              <Route path="/orders/create-order" element={<OrderForm onLogin={handleLogin}/>} />
             </Routes>
           </div>
         </div>
