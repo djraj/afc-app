@@ -39,11 +39,12 @@ const App = () => {
 
           <div className="col-md-8">
             <Routes>
+            <Route path="/" element={<Dashboard onLogin={handleLogin}/>} />
               <Route
                 path="/login"
                 element={<LoginPage onLogin={handleLogin} />}
               />
-              <Route path="/" element={<Dashboard onLogin={handleLogin}/>} />
+              
               <Route path="/products" element={<ProductList onLogin={handleLogin}/>} />
               <Route path="/orders" element={<OrderList onLogin={handleLogin}/>} />
               <Route path="/products/create-product" element={<ProductForm onLogin={handleLogin}/>} />

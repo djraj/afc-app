@@ -29,7 +29,18 @@ const Dashboard = ({ onLogin }) => {
 
     fetchTotalOrders();
     fetchTotalProducts(); // Call both functions
+    // eslint-disable-next-line
   }, []);
+
+  const handleRedirectAllProduct = async (e) => {
+    e.preventDefault();
+    navigate("/products"); 
+  };
+
+  const handleRedirectAllOrders = async (e) => {
+    e.preventDefault();
+    navigate("/orders"); 
+  };
 
   return (
     <div className="section p-5">
@@ -43,9 +54,11 @@ const Dashboard = ({ onLogin }) => {
               <p className="card-text fs-1">
               {totalOrders}
               </p>
-              <a href="#" className="btn btn-primary">
-                View All Orders
-              </a>
+              <div className="d-grid gap-2">
+                <button className="btn btn-info" onClick={handleRedirectAllOrders}>
+                  View All Orders
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -56,9 +69,11 @@ const Dashboard = ({ onLogin }) => {
               <p className="card-text fs-1">
               {totalProducts}
               </p>
-              <a href="#" className="btn btn-primary">
-                View All Products
-              </a>
+              <div className="d-grid gap-2">
+                <button className="btn btn-info" onClick={handleRedirectAllProduct}>
+                  View All Products
+                </button>
+              </div>
             </div>
           </div>
         </div>
