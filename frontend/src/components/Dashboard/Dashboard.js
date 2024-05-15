@@ -12,7 +12,7 @@ const Dashboard = () => {
     const token = getUserToken();
     // console.log("dashtoken", token);
     if (!token) {
-      navigate('/login'); // Redirect to login if no token
+      navigate("/login"); // Redirect to login if no token
       return; // Exit if no token
     }
 
@@ -31,10 +31,38 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
+    <div className="section p-5">
       <h1>Dashboard</h1>
-      <p>Total Orders: {totalOrders}</p>
-      <p>Total Products: {totalProducts}</p>
+      <hr />
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title">Total Number of Orders</h5>
+              <p class="card-text fs-1">
+              {totalOrders}
+              </p>
+              <a href="#" class="btn btn-primary">
+                View All Orders
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title">Total Number of Products</h5>
+              <p class="card-text fs-1">
+              {totalProducts}
+              </p>
+              <a href="#" class="btn btn-primary">
+                View All Products
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

@@ -33,12 +33,13 @@ const SideMenu = ({ onLogin }) => {
   };
 
   return (
+    <div>
     <div
       id="bdSidebar"
       className="d-flex flex-column 
-                    flex-shrink-0 
+                    flex-fill 
                     p-3 bg-dark bg-gradient
-                    text-white offcanvas-md offcanvas-start"
+                    text-white offcanvas-md offcanvas-start min-vh-100"
     >
       <span>
         <p className="text-center"> AFC APP</p>
@@ -55,11 +56,11 @@ const SideMenu = ({ onLogin }) => {
           <Link to="/">Dashboard</Link>
         </li>
         <li className="nav-item p-2">
-        <FontAwesomeIcon icon={fas.faLayerGroup} className="pe-2" />
+          <FontAwesomeIcon icon={fas.faLayerGroup} className="pe-2" />
           <Link to="/products">Products</Link>
         </li>
         <li className="nav-item p-2">
-        <FontAwesomeIcon icon={fas.faClipboardList} className="pe-2" />
+          <FontAwesomeIcon icon={fas.faClipboardList} className="pe-2" />
           <Link to="/orders">Orders</Link>
         </li>
         <hr />
@@ -67,13 +68,17 @@ const SideMenu = ({ onLogin }) => {
           <i className="fa-solid fa-graduation-cap"></i>
           <div className="d-grid gap-2">
             <button onClick={handleLogout} className="btn btn-danger">
-            <FontAwesomeIcon icon={fas.faRightFromBracket} className="pe-2" />
+              <FontAwesomeIcon icon={fas.faRightFromBracket} className="pe-2" />
               Logout
             </button>
           </div>
         </li>
       </ul>
     </div>
+
+</div>
+
+    
   );
 };
 

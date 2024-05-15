@@ -30,10 +30,10 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="section main-wrapper">
-        <div className="row">
+      <div className="container-fluid">
+        <div className="row flex-nowrap">
           {/* <SideMenu /> */}
-          <div className="col-md-4">
+          <div className="col-md-4 ps-0">
             {isLoggedIn && <SideMenu onLogin={handleLogin} />}
           </div>
 
